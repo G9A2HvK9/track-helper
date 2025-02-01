@@ -2,6 +2,8 @@ import requests
 import logging
 from urllib.parse import urlparse, parse_qs
 from track_helper.config import YOUTUBE_API_BASE_URL, YOUTUBE_API_KEY, DEFAULT_MAX_RESULTS
+from track_helper.utils.formatting import split_title
+
 
 # Set up logging for debugging
 logging.basicConfig(level=logging.DEBUG)
@@ -40,7 +42,16 @@ def get_playlist_videos(playlist_id: str):
             for item in data["items"]:
                 video_title = item["snippet"]["title"]
                 video_id = item["snippet"]["resourceId"]["videoId"]
-                videos.append({"title": video_title, "url": f"https://www.youtube.com/watch?v={video_id}"})
+
+                formatted_title = split_title(video_title)
+
+
+                videos.append({
+                    "title": video_title,
+                    "formatted": formatted_title,
+                    "url": f"https://www.youtube.com/watch?v={video_id}"
+                })
+
 
         next_page_token = data.get("nextPageToken")
 
