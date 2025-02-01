@@ -55,7 +55,7 @@ def get_playlist_videos(playlist_id: str):
                     "title": video_title,
                     "formatted": formatted_title,
                     "url": f"https://www.youtube.com/watch?v={video_id}",
-                    "discogs": discogs_url  # ✅ Append Discogs result
+                    "discogs": discogs_url  # Append Discogs result
                 })
 
 
