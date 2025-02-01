@@ -3,6 +3,8 @@ import logging
 from urllib.parse import urlparse, parse_qs
 from track_helper.config import YOUTUBE_API_BASE_URL, YOUTUBE_API_KEY, DEFAULT_MAX_RESULTS
 from track_helper.utils.formatting import split_title
+from track_helper.services.discogs_service import search_discogs  # Import Discogs search
+
 
 
 # Set up logging for debugging
@@ -44,12 +46,16 @@ def get_playlist_videos(playlist_id: str):
                 video_id = item["snippet"]["resourceId"]["videoId"]
 
                 formatted_title = split_title(video_title)
+                artist = formatted_title["artist"]
+                track = formatted_title["track"]
 
+                discogs_url = search_discogs(artist, track)  # Search Discogs
 
                 videos.append({
                     "title": video_title,
                     "formatted": formatted_title,
-                    "url": f"https://www.youtube.com/watch?v={video_id}"
+                    "url": f"https://www.youtube.com/watch?v={video_id}",
+                    "discogs": discogs_url  # Append Discogs result
                 })
 
 
