@@ -1,7 +1,7 @@
 import requests
 import os
 from urllib.parse import quote
-from track_helper.config import DISCOGS_BASE_URL, DISCOGS_API_URL, DISCOGS_API_KEY
+from backend.config import DISCOGS_BASE_URL, DISCOGS_API_URL, DISCOGS_API_KEY
 
 def search_discogs(artist, track):
     """Searches Discogs for a track and returns the top result URL."""
