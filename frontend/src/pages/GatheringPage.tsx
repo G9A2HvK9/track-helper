@@ -1,11 +1,14 @@
 import '../styles/GatheringPage.css';
 import Popup from '../components/popup';
 import React, { useState } from 'react';
+import axios from 'axios';
 
 
 const GatheringPage: React.FC = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [localFolderPath, setLocalFolderPath] = useState('');
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [statusColor, setStatusColor] = useState<string>('');
+  const [musicData, setMusicData] = useState<any[]>([]);
 
   const handleGatheringStart = () => {
     setIsPopupOpen(true);
@@ -15,10 +18,23 @@ const GatheringPage: React.FC = () => {
     setIsPopupOpen(false);
   };
 
-  const handleLocalPathSubmit = (path: string) => {
-    // Process the local path here, like storing it in state or calling an API to gather the music
-    setLocalFolderPath(path);
-    console.log('Gathering from path:', path); // For now, just log it
+  const handleLocalPathSubmit = async (path: string) => {
+    setIsPopupOpen(false); // Close the popup
+    try {
+      const response = await axios.post('/api/gather', { path });
+
+      if (response.status === 200) {
+        setStatusMessage('Operation successful');
+        setStatusColor('green');
+        setMusicData(response.data); // Store the music data
+      } else {
+        setStatusMessage('Operation failed, try again');
+        setStatusColor('red');
+      }
+    } catch (error) {
+      setStatusMessage('Operation failed, try again');
+      setStatusColor('red');
+    }
   };
 
   return (
@@ -37,6 +53,20 @@ const GatheringPage: React.FC = () => {
         onClose={handleClosePopup}
         onLocalPathSubmit={handleLocalPathSubmit}
       />
+
+      {/* Ensure status message appears below the main content */}
+      <div className="status-container">
+        {statusMessage && (
+          <div className={`status-message ${statusColor}`}>
+            <p>{statusMessage}</p>
+            {statusColor === 'green' && (
+              <button className="view-music-btn" onClick={() => console.log('View My Music clicked')}>
+                View My Music
+              </button>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

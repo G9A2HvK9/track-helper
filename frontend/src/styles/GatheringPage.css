@@ -9,12 +9,13 @@ body, html {
 
 /* Main container that should take up the full width and height */
 .gathering-container {
-  display: flex;
-  justify-content: center; /* Horizontally center the content */
-  align-items: center;     /* Vertically center the content */
-  height: 100vh;           /* Full height of the viewport */
-  width: 100vw;            /* Full width of the viewport */
-  background-color: #f4f4f9; /* Light background */
+  display: flex; /* Keep flex */
+  flex-direction: column; /* Force vertical stacking */
+  justify-content: center; /* Center content vertically */
+  align-items: center; /* Center content horizontally */
+  height: 100vh;
+  width: 100vw;
+  background-color: #f4f4f9;
 }
 
 /* The content box, centered */
@@ -70,4 +71,38 @@ body, html {
 
 .home-icon:hover {
   color: #0056b3; /* Darker shade on hover */
+}
+
+.status-container {
+  width: 100%; /* Full width */
+  text-align: center; /* Center content */
+  margin-top: 20px; /* Space between gathering content and status */
+}
+
+.status-message {
+  font-size: 18px;
+  text-align: center;
+  width: 100%;
+}
+
+.green {
+  color: green;
+  font-weight: bold;
+}
+
+.red {
+  color: red;
+  font-weight: bold;
+}
+
+.view-music-btn {
+  background-color: green;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 15px;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
 }

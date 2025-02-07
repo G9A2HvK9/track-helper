@@ -4,7 +4,7 @@ import '../styles/Popup.css'; // Import CSS from ../styles/
 interface PopupProps {
   isOpen: boolean;
   onClose: () => void;
-  onLocalPathSubmit: (path: string) => void;
+  onLocalPathSubmit: (path: string) => void; // The function passed from Gathering
 }
 
 const Popup: React.FC<PopupProps> = ({ isOpen, onClose, onLocalPathSubmit }) => {
@@ -44,7 +44,6 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, onLocalPathSubmit }) => 
   const handleSubmit = () => {
     if (localPath) {
       onLocalPathSubmit(localPath);
-      setLocalPath(''); // Reset the path after submission
       onClose(); // Close the popup after submission
     }
   };
