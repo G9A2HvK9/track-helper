@@ -1,8 +1,7 @@
 import '../styles/GatheringPage.css';
-import Popup from '../components/popup';
+import Popup from '../components/Popup';
 import React, { useState } from 'react';
-import axios from 'axios';
-
+import api from '../api/axiosInstance';
 
 const GatheringPage: React.FC = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -21,7 +20,7 @@ const GatheringPage: React.FC = () => {
   const handleLocalPathSubmit = async (path: string) => {
     setIsPopupOpen(false); // Close the popup
     try {
-      const response = await axios.post('/api/gather', { path });
+      const response = await api.post('/api/gather', { path });
 
       if (response.status === 200) {
         setStatusMessage('Operation successful');
