@@ -6,14 +6,15 @@ Requirements:
 
 Frontend:
     run:
-        - cd frontend
-        - npm install
-        - npm run dev
+        - `cd frontend`
+        - `npm install`
+        - `npm run dev`
 
 Backend:
     run:
-        - cd backend
-        - uvicorn main:app --reload
+        - `poetry shell` (requires a one time execution of: `poetry self add poetry-plugin-shell`)
+        - `cd backend`
+        - `uvicorn main:app --reload`
     
     nice to have:
-        - SQLiteviewer extension to view DB
+        - *SQLiteviewer* extension to view DB
