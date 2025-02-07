@@ -14,3 +14,6 @@ Backend:
     run:
         - cd backend
         - uvicorn main:app --reload
+    
+    nice to have:
+        - SQLiteviewer extension to view DB

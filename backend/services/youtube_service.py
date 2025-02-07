@@ -1,9 +1,9 @@
 import requests
 import logging
 from urllib.parse import urlparse, parse_qs
-from track_helper.config import YOUTUBE_API_BASE_URL, YOUTUBE_API_KEY, DEFAULT_MAX_RESULTS
-from track_helper.utils.formatting import split_title
-from track_helper.services.discogs_service import search_discogs  # Import Discogs search
+from backend.config import YOUTUBE_API_BASE_URL, YOUTUBE_API_KEY, DEFAULT_MAX_RESULTS
+from backend.utils.formatting import split_title
+from backend.services.discogs_service import search_discogs  # Import Discogs search
 
 
 
