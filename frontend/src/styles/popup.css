@@ -1,0 +1,119 @@
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.popup-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    max-width: 90%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Ensure content aligns from the top */
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+h3 {
+    margin: 10px 0; /* Reduced margin for better spacing */
+    font-size: 1.5em;
+    color: black;
+}
+
+p {
+    margin-bottom: 10px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.popup-btn {
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    width: 45%;
+    transition: background-color 0.3s;
+}
+
+.local-btn {
+    background-color: #007bff;
+}
+
+.youtube-btn {
+    background-color: #ff0000;
+}
+
+.disabled-btn {
+    background-color: #d3d3d3;
+}
+
+.local-input-section {
+    margin-top: 10px; /* Adjust top margin to prevent excessive space */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.instruction-text {
+    margin-bottom: 10px; /* Same space as below the buttons */
+}
+
+.local-input-section input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.submit-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    width: 80%;
+}
+
+label {
+    color: black; /* Set text color to black */
+    font-size: 14px; /* Optional: Adjust font size */
+}
+
+#local-path {
+    background-color: white; /* Set background to white */
+    color: black; /* Optional: Set text color to black */
+    padding: 8px; /* Optional: Add padding for better readability */
+    border: 1px solid #ccc; /* Optional: Add border for styling */
+    border-radius: 4px; /* Optional: Round the corners */
+    width: 100%; /* Make the input take full width of its container */
+  }
