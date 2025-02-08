@@ -3,3 +3,4 @@ frontend/node_modules/
 **/__pycache__/
 *.pyc
 *.pyo
+backend/local.db
