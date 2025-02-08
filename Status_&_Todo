@@ -1,0 +1,37 @@
+Frontend:
+
+Landing page allows to use the two funtionalities:
+1. Tagging
+    -
+2. Gathering
+    - Start gathering button which opens a Popup button which allows to gather from:
+        a. Youtube
+            -
+        b. local:
+            - In this option, you need to give a Path to the folder where you music resides
+            - After providing a Path, you click submit, which leads a call to the backend (check below) that returns all the music gathered. A message is displayed accordingly. A button to view the music is added, but has no functionality yet.
+            - To do:
+                - Add a mechanism above the view music button, that allows for a 1-by-1 manual review of all problematic tracks
+                - Elaborate on the view music button, should take you to a separate page where you can view losless music and compressed music seperately
+
+Backend:
+- Setup SQLite DB with tables: ['tags', 'owned_music_losless', 'owned_music_compressed', 'unowned_music', 'tags_association']
+    - tags_association is used to map the many-to-many relationship between  owned_music_losless and tags. This is used instead of a comma separated string because later when we are doing filtered searches, it will be a lot more performant.
+- Upon Running the app, the DB will be created if it doesn't already exist.
+
+ToDo:
+    - implement the /api/gather enpoint and functionality:
+        - go through all folders and subfolders and save the music to the DB
+            - Saving music should follow the `-` principle: 1 dash: easy save, no or multiples dashes: manual review
+                - the manual review should edit the file. So that upon future execution, the problem doesnt happen again
+            - if losless, store in owned_music_losless. Tags for now should be null.
+            - if compressed, store in owned_music_compressed
+        - return all the problematic files for further treatment in the frontend
+
+
+Major Milestones:
+Current: Local Gatherer and Cleaner
+Next: Youtube Gatherer and Clean
+Future:
+    - Remove duplication Shenanigans
+    - Tagging Functionality
