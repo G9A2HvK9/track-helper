@@ -27,6 +27,7 @@ ToDo:
             - if losless, store in owned_music_losless. Tags for now should be null.
             - if compressed, store in owned_music_compressed
         - return all the problematic files for further treatment in the frontend
+    - implement the endpoint that goes hand-in-hand with frontend part to fix the file that have no or multiples dashes
 
 
 Major Milestones:
