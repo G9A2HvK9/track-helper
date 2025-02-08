@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from backend.routes import youtube
 from sqlalchemy.orm import Session
 from backend.database import engine, Base, get_db
-from backend.data.models import Tag, OwnedMusicLosless, OwnedMusicCompressed, UnownedMusic
+from backend.data.models import Tag
 from sqlalchemy.sql import text
 
 app = FastAPI()
