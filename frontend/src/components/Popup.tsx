@@ -1,50 +1,65 @@
-import React, { useState, useEffect, useRef } from 'react'; // Add useEffect and useRef
-import '../styles/Popup.css'; // Import CSS from ../styles/
+import React, { useState, useEffect, useRef } from 'react';
+import '../styles/Popup.css';
 
 interface PopupProps {
   isOpen: boolean;
   onClose: () => void;
-  onLocalPathSubmit: (path: string) => void; // The function passed from Gathering
+  onLocalPathSubmit: (path: string) => void;
+  onXmlFileUpload?: (file: File) => void; // Optional function for XML file upload
 }
 
-const Popup: React.FC<PopupProps> = ({ isOpen, onClose, onLocalPathSubmit }) => {
+const Popup: React.FC<PopupProps> = ({ isOpen, onClose, onLocalPathSubmit, onXmlFileUpload }) => {
   const [localPath, setLocalPath] = useState('');
-  const [isLocalSelected, setIsLocalSelected] = useState(false); // State to track if Local is selected
-  const [isYouTubeSelected, setIsYouTubeSelected] = useState(false); // State for YouTube
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isLocalSelected, setIsLocalSelected] = useState(false);
+  const [isYouTubeSelected, setIsYouTubeSelected] = useState(false);
+  const [isXmlUploadSelected, setIsXmlUploadSelected] = useState(false);
 
-  const popupRef = useRef<HTMLDivElement>(null); // Create a ref for the popup
+  const popupRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Close the popup if the user clicks outside of it
     const handleClickOutside = (event: MouseEvent) => {
       if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
-        onClose(); // Close the popup
+        onClose();
       }
     };
 
-    // Add event listener when the component mounts
     document.addEventListener('mousedown', handleClickOutside);
-
-    // Cleanup event listener when component unmounts
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [onClose]); // Dependency array includes onClose to avoid stale closures
+  }, [onClose]);
 
   const handleLocalClick = () => {
     setIsLocalSelected(true);
-    setIsYouTubeSelected(false); // Reset YouTube button state when Local is selected
+    setIsYouTubeSelected(false);
+    setIsXmlUploadSelected(false);
   };
 
   const handleYouTubeClick = () => {
     setIsYouTubeSelected(true);
-    setIsLocalSelected(false); // Reset Local button state when YouTube is selected
+    setIsLocalSelected(false);
+    setIsXmlUploadSelected(false);
+  };
+
+  const handleXmlUploadClick = () => {
+    setIsXmlUploadSelected(true);
+    setIsLocalSelected(false);
+    setIsYouTubeSelected(false);
   };
 
   const handleSubmit = () => {
     if (localPath) {
       onLocalPathSubmit(localPath);
-      onClose(); // Close the popup after submission
+      onClose();
+    }
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      if (onXmlFileUpload) onXmlFileUpload(file); // Trigger the XML file upload callback
     }
   };
 
@@ -52,7 +67,7 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, onLocalPathSubmit }) => 
     <>
       {isOpen && (
         <div className="popup-overlay">
-          <div className="popup-content" ref={popupRef}> {/* Add ref to the popup container */}
+          <div className="popup-content" ref={popupRef}>
             <button className="close-btn" onClick={onClose}>X</button>
             <h3>Select Gathering Option</h3>
             <div className="button-group">
@@ -68,9 +83,15 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, onLocalPathSubmit }) => 
               >
                 Local
               </button>
+              <button
+                className={`popup-btn ${isXmlUploadSelected ? 'disabled-btn' : 'xml-btn'}`}
+                onClick={handleXmlUploadClick}
+              >
+                Upload XML
+              </button>
             </div>
 
-            {/* Conditionally render the local path input and submit button */}
+            {/* Local Path Input Section */}
             {isLocalSelected && (
               <div className="local-input-section">
                 <label htmlFor="local-path">Enter Local Music Folder Path:</label>
@@ -82,6 +103,20 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, onLocalPathSubmit }) => 
                   placeholder="e.g., /Users/music"
                 />
                 <button onClick={handleSubmit} className="submit-btn">Submit</button>
+              </div>
+            )}
+
+            {/* XML File Upload Section */}
+            {isXmlUploadSelected && (
+              <div className="xml-upload-section">
+                <label htmlFor="xml-file">Upload XML File:</label>
+                <input
+                  type="file"
+                  id="xml-file"
+                  accept=".xml"
+                  onChange={handleFileChange}
+                />
+                {selectedFile && <p className="file-name">Selected file: {selectedFile.name}</p>}
               </div>
             )}
           </div>
