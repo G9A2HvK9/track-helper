@@ -3,7 +3,7 @@ from backend.services.youtube_service import get_playlist_id, get_playlist_video
 
 router = APIRouter()
 
-@router.get("/youtube/playlist")
+@router.get("/playlist")
 def fetch_playlist_videos(playlist_url: str = Query(..., title="YouTube Playlist URL")):
     """Fetches videos from a YouTube playlist URL."""
     playlist_id = get_playlist_id(playlist_url)  # Extract Playlist ID

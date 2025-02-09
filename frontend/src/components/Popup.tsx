@@ -5,15 +5,15 @@ interface PopupProps {
   isOpen: boolean;
   onClose: () => void;
   onLocalPathSubmit: (path: string) => void;
-  onXmlFileUpload?: (file: File) => void; // Optional function for XML file upload
 }
 
-const Popup: React.FC<PopupProps> = ({ isOpen, onClose, onLocalPathSubmit, onXmlFileUpload }) => {
+const Popup: React.FC<PopupProps> = ({ isOpen, onClose, onLocalPathSubmit }) => {
   const [localPath, setLocalPath] = useState('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isLocalSelected, setIsLocalSelected] = useState(false);
   const [isYouTubeSelected, setIsYouTubeSelected] = useState(false);
   const [isXmlUploadSelected, setIsXmlUploadSelected] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const popupRef = useRef<HTMLDivElement>(null);
 
@@ -48,18 +48,44 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, onLocalPathSubmit, onXml
     setIsYouTubeSelected(false);
   };
 
-  const handleSubmit = () => {
-    if (localPath) {
-      onLocalPathSubmit(localPath);
-      onClose();
-    }
-  };
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setSelectedFile(file);
-      if (onXmlFileUpload) onXmlFileUpload(file); // Trigger the XML file upload callback
+      setShowConfirmation(true); // Show confirmation prompt
+    }
+  };
+
+  const handleConfirmUpload = async () => {
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+
+      try {
+        const response = await fetch('http://localhost:8000/api/xml/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+          alert('File uploaded and processed successfully');
+        } else {
+          alert('Error uploading file');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error occurred while uploading the file');
+      } finally {
+        setShowConfirmation(false);
+        setSelectedFile(null);
+      }
+    }
+  };
+
+  const handleSubmit = () => {
+    if (localPath) {
+      onLocalPathSubmit(localPath);
+      onClose();
     }
   };
 
@@ -91,7 +117,6 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, onLocalPathSubmit, onXml
               </button>
             </div>
 
-            {/* Local Path Input Section */}
             {isLocalSelected && (
               <div className="local-input-section">
                 <label htmlFor="local-path">Enter Local Music Folder Path:</label>
@@ -106,17 +131,19 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, onLocalPathSubmit, onXml
               </div>
             )}
 
-            {/* XML File Upload Section */}
             {isXmlUploadSelected && (
               <div className="xml-upload-section">
                 <label htmlFor="xml-file">Upload XML File:</label>
-                <input
-                  type="file"
-                  id="xml-file"
-                  accept=".xml"
-                  onChange={handleFileChange}
-                />
+                <input type="file" id="xml-file" accept=".xml" onChange={handleFileChange} />
                 {selectedFile && <p className="file-name">Selected file: {selectedFile.name}</p>}
+              </div>
+            )}
+
+            {showConfirmation && (
+              <div className="confirmation-popup">
+                <p>Do you want to upload {selectedFile?.name}?</p>
+                <button onClick={handleConfirmUpload}>Confirm</button>
+                <button onClick={() => setShowConfirmation(false)}>Cancel</button>
               </div>
             )}
           </div>
